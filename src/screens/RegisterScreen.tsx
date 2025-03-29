@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, Button, Alert, View, StyleSheet, Text, TouchableOpacity, Image, Platform, Modal, FlatList,Dimensions } from "react-native";
+import { TextInput, Button, Alert, View, StyleSheet, Text, TouchableOpacity, Image, Platform, Modal, FlatList,Dimensions, StatusBar } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -24,12 +24,13 @@ const countryCodes = [
 
 ];
 
-export default function RegisterScreen({ navigation }) {
+function RegisterScreen({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [lastname, setLastName] = useState("");
+    const [phonenumber, setPhoneNumber] = useState("");
+    const [birthofdate, setBirthOfDate] = useState("");
     const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
     const [countryCodeModalVisible, setCountryCodeModalVisible] = useState(false);
   
@@ -39,10 +40,19 @@ export default function RegisterScreen({ navigation }) {
 
     const handleRegister = async () => {
       try {
-        Alert.alert("Başarılı Kayıt")
+        const response = await fetch("http://192.168.25.88:5000/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password ,name,lastname,phonenumber,birthofdate:date.toISOString(),}),
+        });
+        Alert.alert("Success", "You have successfully registered.");
         navigation.navigate("Login");
-    } catch (err) {
-      Alert.alert("Bağlantı Hatası", "Sunucuya bağlanırken bir hata oluştu.");}
+
+      } catch (err) {
+        Alert.alert("Bağlantı Hatası", "Sunucuya bağlanırken bir hata oluştu.");
+      }
     };
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -72,10 +82,11 @@ export default function RegisterScreen({ navigation }) {
     );
 
   return (
- 
+    <>
+    <StatusBar backgroundColor="#8ec5fc" barStyle="dark-content" />
     <LinearGradient
       colors={["#8ec5fc", "#ffffff"]}
-      locations={[0,0.4, 0.8]}
+      locations={[0, 0.8]}
       style={{ width:'100%',height:'100%',  alignItems: "center" }}>
    <ScrollView contentContainerStyle={styles.scroll}>
         <View style={{marginTop:40}}>
@@ -135,7 +146,7 @@ export default function RegisterScreen({ navigation }) {
                         marginTop: 5,
                         paddingLeft: 10
                     }}
-                    value={lastName}
+                    value={lastname}
                     onChangeText={setLastName}
                     />
                 </View>
@@ -156,22 +167,24 @@ export default function RegisterScreen({ navigation }) {
                     keyboardType="email-address"
                     value={email}
                     onChangeText={setEmail}
+            
                     />
                 </View>
                 </View>
 
         <View>
-
-        <Text style={{color:'#535456', fontWeight: '500', fontSize: 13,marginLeft:15,marginTop:20}}>Birth of Date</Text>
-        <TouchableOpacity 
-        onPress={showDatePicker}>
-        <DateTimePickerModal
+          
+         {/* <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         date={date}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-      />
+      />  */}
+        <Text style={{color:'#535456', fontWeight: '500', fontSize: 13,marginLeft:15,marginTop:20}}>Birth of Date</Text>
+        <TouchableOpacity 
+        onPress={showDatePicker}>
+   
         <View style={{}}>
                    
                     <View style={{alignItems: 'center', justifyContent: 'center',}}>
@@ -238,7 +251,7 @@ export default function RegisterScreen({ navigation }) {
               }}
               placeholder="Phone number"
               keyboardType="phone-pad"
-              value={phoneNumber}
+              value={phonenumber}
               onChangeText={setPhoneNumber}
             />
           </View>
@@ -254,9 +267,10 @@ export default function RegisterScreen({ navigation }) {
                         marginTop: 5,
                         paddingLeft: 10
                     }}
-                    keyboardType="email-address"
+                    
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry={true}
                     />
                 </View>
         </View>
@@ -272,6 +286,7 @@ export default function RegisterScreen({ navigation }) {
         </View>
 
         {/* Country Code Modal */}
+        
         <Modal
           animationType="slide"
           transparent={true}
@@ -298,6 +313,7 @@ export default function RegisterScreen({ navigation }) {
           </View>
           </ScrollView>
     </LinearGradient>
+    </>
   )
 }
 
@@ -352,3 +368,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }
 });
+
+export default RegisterScreen;

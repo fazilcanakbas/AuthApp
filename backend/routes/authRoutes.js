@@ -6,13 +6,13 @@ const router = express.Router(); // express router oluşturuldu
 
 
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { name, email, password ,lastname,birthofdate,phonenumber} = req.body;
   
     try {
       const userExists = await User.findOne({ email });
       if (userExists) return res.status(400).json({ message: 'Bu email ile kayıtlı bir kullanıcı mevcut.' });
   
-      const user = new User({ username, email, password });
+      const user = new User({ name, email, password,lastname,birthofdate,phonenumber,createdAt: new Date() });
       await user.save();
       
       // kullanıcıyı kaydettikten sonra token oluşturuyoruz
@@ -40,6 +40,28 @@ router.post('/register', async (req, res) => {
   
       res.json({ message: 'Giriş başarılı!', token ,email:user.email,username:user.username,password:user.password });
   
+    } catch (error) {
+      res.status(500).json({ message: 'Bir hata oluştu', error });
+    }
+  });
+
+  // const authMiddleware = (req, res, next) => {
+  //   const token = req.header('Authorization');
+  //   if (!token) return res.status(401).json({ message: 'Yetkisiz erişim' });
+  
+  //   try {
+  //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //     req.user = decoded; // Token'dan userId çekiyoruz
+  //     next();
+  //   } catch (error) {
+  //     res.status(401).json({ message: 'Geçersiz token' });
+  //   }
+  // };
+  
+  router.get('/User', async (req, res) => {
+    try {
+      const users = await User.find();
+      res.json(users);
     } catch (error) {
       res.status(500).json({ message: 'Bir hata oluştu', error });
     }

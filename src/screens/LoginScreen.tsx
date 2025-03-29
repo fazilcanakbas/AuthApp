@@ -1,16 +1,37 @@
 import React, { useState } from "react";
-import { TextInput, Button, Alert, View, StyleSheet ,Text,TouchableOpacity,Image} from "react-native";
+import { TextInput, Button, Alert, View, StyleSheet ,Text,TouchableOpacity,Image, StatusBar} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import * as Google from 'expo-auth-session';
+import { initializeApp, getApps } from 'firebase/app';
+import firebase from 'firebase/app';
+import 'firebase/auth'; 
+
+if (!getApps().length) {
+  initializeApp({
+    apiKey: 'AIzaSyCsrosfva8xrf4ZvGNw4YmqcA5maEO0OaE',
+    projectId: 'authapp-81b6b',
+    appId: '1:937920369763:android:ac5b17d1a4841549991456',
+  });
+} else {
+  const app = getApps()[0];
+}
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false); // Başlangıçta kutu işaretlenmemiş
 
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   clientId: '937920369763-a6tkfkrdid6l8reqfe80r2ip4n580241.apps.googleusercontent.com.apps.googleusercontent.com',
+  // });
+
+
+
   const handleCheckBox = () => {
-    setIsChecked(!isChecked); // Kutu işaretlendiğinde durum değiştirilir
+    setIsChecked(!isChecked);  
   };
 
   const handleLogin = async () => {
@@ -37,7 +58,8 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-
+    <>
+    <StatusBar backgroundColor="#e0c3fc" barStyle="dark-content" />
     <LinearGradient
       colors={["#e0c3fc","#8ec5fc", "#ffffff"]} 
       locations={[0,0.4, 0.8]} 
@@ -101,19 +123,22 @@ const LoginScreen = ({ navigation }) => {
        <Text style={{alignSelf: 'flex-start', marginLeft: 20,color:'#535456',marginTop:20,fontWeight:'500',fontSize:13}}>Email</Text>
         <TextInput
           style={{
-            borderWidth:1,borderColor:'#d7d9dc',borderRadius:10,flexDirection:'row',alignItems:'center',justifyContent:'center',width:280,height:45,marginTop:5
+            borderWidth:1,borderColor:'#d7d9dc',borderRadius:10,flexDirection:'row',alignItems:'center',justifyContent:'center',width:280,height:45,marginTop:5,paddingLeft:10
           }}
           value={email}
           onChangeText={setEmail}
+          keyboardType="email-address"
         />
         <Text style={{alignSelf: 'flex-start', marginLeft: 20,color:'#535456',marginTop:15,fontWeight:'500',fontSize:13}}>Password</Text>
         <TextInput
          style={{
-            borderWidth:1,borderColor:'#d7d9dc',borderRadius:10,flexDirection:'row',alignItems:'center',justifyContent:'center',width:280,height:45,marginTop:5
+            borderWidth:1,borderColor:'#d7d9dc',borderRadius:10,flexDirection:'row',alignItems:'center',justifyContent:'center',width:280,height:45,marginTop:5,
+            paddingLeft:10
           }}
           secureTextEntry
           value={password}
           onChangeText={setPassword}
+          keyboardType='default'
         />
         
  
@@ -163,7 +188,7 @@ const LoginScreen = ({ navigation }) => {
 
       </View>
     </LinearGradient>
-
+    </>
   )};
 
 
