@@ -40,7 +40,7 @@ function RegisterScreen({ navigation }) {
 
     const handleRegister = async () => {
       try {
-        const response = await fetch("http://192.168.25.88:5000/api/auth/register", {
+        const response = await fetch("http://192.168.202.88:5000/api/auth/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +115,7 @@ function RegisterScreen({ navigation }) {
            
           <View style={{alignItems: 'center', justifyContent: 'center',gap:20,marginTop:20}}>
             <View style={{flexDirection:'row',gap:30,}}>
-                {/* Name Text and TextInput */}
+  
                 <View >
                     <Text style={{color: '#535456', fontWeight: '500', fontSize: 13}}>Name</Text>
                     <TextInput
@@ -133,7 +133,7 @@ function RegisterScreen({ navigation }) {
                     />
                 </View>
 
-                {/* Last Name Text and TextInput */}
+
                 <View >
                     <Text style={{color: '#535456', fontWeight: '500', fontSize: 13}}>Last Name</Text>
                     <TextInput

@@ -1,8 +1,9 @@
 const express = require('express'); 
-const jwt = require('jsonwebtoken'); // JWT için
-const User = require('../models/User'); // User modeli import edildi
-const router = express.Router(); // express router oluşturuldu
-
+const jwt = require('jsonwebtoken'); 
+const User = require('../models/User'); 
+const router = express.Router(); 
+const authMiddleware = require('../middleware/auth'); 
+const bcrypt = require('bcrypt');
 
 
 router.post('/register', async (req, res) => {
@@ -14,8 +15,6 @@ router.post('/register', async (req, res) => {
   
       const user = new User({ name, email, password,lastname,birthofdate,phonenumber,createdAt: new Date() });
       await user.save();
-      
-      // kullanıcıyı kaydettikten sonra token oluşturuyoruz
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
   
       res.status(201).json({ message: 'Kullanıcı başarıyla kaydedildi!', token });
@@ -35,10 +34,9 @@ router.post('/register', async (req, res) => {
       const isMatch = await user.matchPassword(password);
       if (!isMatch) return res.status(401).json({ message: 'Şifre yanlış' });
   
-      // Giriş başarılı, token oluşturuluyor
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
   
-      res.json({ message: 'Giriş başarılı!', token ,email:user.email,username:user.username,password:user.password });
+      res.json({ message: 'Giriş başarılı!', token ,email:user.email,username:user.username,password:user.password,token});
   
     } catch (error) {
       res.status(500).json({ message: 'Bir hata oluştu', error });
@@ -51,20 +49,89 @@ router.post('/register', async (req, res) => {
   
   //   try {
   //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  //     req.user = decoded; // Token'dan userId çekiyoruz
+  //     req.user = decoded; 
   //     next();
   //   } catch (error) {
   //     res.status(401).json({ message: 'Geçersiz token' });
   //   }
   // };
-  
+   
+
+
+
+  router.get('/me', authMiddleware, async (req, res) => {
+    try {
+      const user = await User.findById(req.user.userId).select('-password');
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ message: 'Kullanıcı bilgisi alınamadı', error: err.message });
+    }
+  });
+
+
+// router.put('/changepassword', authMiddleware, async (req, res) => {
+//   try {
+
+    
+//       const email = req.user.email;
+//       const { currentPassword, newPassword } = req.body;
+
+
+//       const user = await User.findOne(email);
+//       if (!user) return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+
+//       const isMatch = await bcrypt.compare(currentPassword, user.password);
+//       console.log('user.password:', user.password); 
+//       console.log('currentPassword:', currentPassword); 
+//       if (!isMatch) return res.status(400).json({ message: 'Mevcut şifre yanlış' });
+//       console.log('isMatch:', isMatch);  // Karşılaştırma sonucunu kontrol et
+
+    
+//       console.log('currentPassword:', currentPassword);
+
+
+//       const hashedPassword = await bcrypt.hash(newPassword, 10);
+//       user.password = hashedPassword;
+//       await user.save();
+
+//       res.status(200).json({ message: 'Şifre başarıyla değiştirildi' });
+//   } catch (error) {
+//       console.error('Şifre değiştirme hatası:', error);
+//       res.status(500).json({ message: 'Sunucu hatası' });
+
+//   }
+// });
+    
+
+router.put('/changepassword', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { currentPassword, newPassword } = req.body;
+    
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
+    
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) return res.status(400).json({ message: 'Mevcut şifre yanlış' });
+    
+    user.password = newPassword;
+    await user.save();
+    
+    res.status(200).json({ message: 'Şifre başarıyla değiştirildi' });
+  } catch (error) {
+    console.error('Şifre değiştirme hatası:', error);
+    res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+  }
+});
+
+
   router.get('/User', async (req, res) => {
     try {
       const users = await User.find();
       res.json(users);
     } catch (error) {
-      res.status(500).json({ message: 'Bir hata oluştu', error });
+      res.status(500).json({ message: 'Bir hata oluştu adamım', error });
     }
   });
   
-  module.exports = router; // router dışa aktarılıyor
+  module.exports = router; 
