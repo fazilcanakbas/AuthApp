@@ -48,7 +48,7 @@ const ChangePasswordScreen = ({ navigation }) => {
     try {
       const token = await AsyncStorage.getItem('token'); 
       const response = await axios.put(
-        "http://192.168.202.88:5000/api/auth/changepassword",
+        "http://192.168.197.88:5000/api/auth/changepassword",
         {
           currentPassword,
           newPassword,

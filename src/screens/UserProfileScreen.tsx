@@ -34,7 +34,7 @@ interface User {
         if (!token) return Alert.alert('Hata', 'Token bulunamadı');
   
         try {
-          const response = await fetch("http://192.168.202.88:5000/api/auth/me", {
+          const response = await fetch("http://192.168.197.88:5000/api/auth/me", {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -102,9 +102,13 @@ interface User {
           </View>
           
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Üyelik Tarihi</Text>
-            <Text style={styles.infoValue}>{user?.createdAt|| "01.01.2025"}</Text>
-          </View>
+  <Text style={styles.infoLabel}>Üyelik Tarihi</Text>
+  <Text style={styles.infoValue}>
+    {user?.createdAt 
+      ? new Date(user.createdAt).toLocaleDateString('tr-TR') 
+      : "01.01.2025"}
+  </Text>
+</View>
         </View>
 
         <View style={styles.card}>

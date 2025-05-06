@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Calendar from 'expo-calendar';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { ScrollView } from "react-native-gesture-handler";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const {width,height} = Dimensions.get('screen');
 
@@ -24,7 +25,8 @@ const countryCodes = [
 
 ];
 
-function RegisterScreen({ navigation }) {
+function RegisterScreen({ navigation}) {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -33,23 +35,39 @@ function RegisterScreen({ navigation }) {
     const [birthofdate, setBirthOfDate] = useState("");
     const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
     const [countryCodeModalVisible, setCountryCodeModalVisible] = useState(false);
+        const [showPassword, setShowPassword] = useState(false);
   
     const [date, setDate] = useState(new Date());
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   
 
     const handleRegister = async () => {
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (!emailRegex.test(email)) {
+        Alert.alert('Hata', 'Lütfen geçerli bir e-posta adresi girin.');
+        return;
+      }
+    
+      if (password.length < 6) {
+        Alert.alert('Hata', 'Şifre en az 6 karakter olmalıdır');
+        return;
+      }
+
       try {
-        const response = await fetch("http://192.168.202.88:5000/api/auth/register", {
+        const response = await fetch("http://192.168.197.88:5000/api/auth/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email, password ,name,lastname,phonenumber,birthofdate:date.toISOString(),}),
         });
+
         Alert.alert("Success", "You have successfully registered.");
         navigation.navigate("Login");
-
+        
+      
       } catch (err) {
         Alert.alert("Bağlantı Hatası", "Sunucuya bağlanırken bir hata oluştu.");
       }
@@ -62,13 +80,13 @@ function RegisterScreen({ navigation }) {
       setDatePickerVisibility(false);
     };
   
-    const handleConfirm = (selectedDate) => {
+    const handleConfirm = (selectedDate: React.SetStateAction<Date>) => {
       setDate(selectedDate);
       hideDatePicker();
     };
     
 
-    const renderCountryCodeItem = ({ item }) => (
+    const renderCountryCodeItem = ({ item }: { item: { code: string; country: string; flag: string } }) => (
       <TouchableOpacity
         style={styles.countryCodeItem}
         onPress={() => {
@@ -255,24 +273,39 @@ function RegisterScreen({ navigation }) {
               onChangeText={setPhoneNumber}
             />
           </View>
-          <View >
-                    <Text style={{color: '#535456', fontWeight: '500', fontSize: 13,marginTop:20}}>Set Passworrd</Text>
-                    <TextInput
-                    style={{
-                        borderWidth: 1,
-                        borderColor: '#d7d9dc',
-                        borderRadius: 10,
-                        width: 280,
-                        height: 45,
-                        marginTop: 5,
-                        paddingLeft: 10
-                    }}
-                    
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={true}
-                    />
-                </View>
+          <View style={{ marginLeft: 0 }}>
+
+              <Text style={{ alignSelf: 'flex-start', color: '#535456', marginTop: 15, fontWeight: '500', fontSize: 13 }}>Password</Text>
+              {/* password input and eye icon */}
+              <View style={{  borderWidth: 1, borderColor: '#d7d9dc', borderRadius: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: width * 0.7, height: height * 0.057, marginTop: 5,
+                  paddingLeft: 10}}>
+              <TextInput
+                style={{
+                  flex: 1,
+                  height: 50,
+                  paddingHorizontal: 1,
+                  fontSize: 16,
+                  color: '#1E293B',
+                }}
+                value={password}
+                onChangeText={setPassword}
+                keyboardType='default'
+                secureTextEntry={!showPassword}
+                
+              />
+              <TouchableOpacity 
+                style={{padding: 12}}
+                onPress={() => setShowPassword(!showPassword)} 
+
+              >
+                <MaterialIcons 
+                  name={showPassword ? "visibility" : "visibility-off"} 
+                  size={22} 
+                  color="#64748B" 
+                />
+              </TouchableOpacity>
+             </View>
+            </View>
         </View>
         <View style={{alignItems:'center',justifyContent:'center'}}>
                 <TouchableOpacity

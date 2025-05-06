@@ -10,15 +10,20 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-       "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+       "bundleIdentifier": "com.yourdomain.yourappname"
     },
     "android": {
+      "package": "com.example.authapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff",
-         "googleServicesFile": "./google-services.json"
+        "package": "com.yourdomain.yourappname",
+      "googleServicesFile": "./google-services.json"
       }
     },
+
+   
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -41,10 +46,21 @@
           "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
         }
       ],
-      ["@react-native-google-signin/google-signin"]
+      [
+        "@react-native-google-signin/google-signin"
+      ],
+        "@react-native-firebase/app"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "759b4dc8-06e8-4522-bbfc-ed0a8f0c3266"
+      }
     }
   }
 }

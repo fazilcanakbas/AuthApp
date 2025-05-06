@@ -8,10 +8,9 @@ import UserProfileScreen from "@/src/screens/UserProfileScreen";
 import ChangePasswordScreen from "@/src/screens/ChangePasswordScreen";
 
 
-
 const Stack = createStackNavigator();
 
-function TabsScreen() {
+function index() {
   return (
     <View style={{ flex: 1 }}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -25,5 +24,5 @@ function TabsScreen() {
   );
 }
 
-export default TabsScreen;
+export default index;
 

@@ -125,6 +125,51 @@ router.put('/changepassword', authMiddleware, async (req, res) => {
 });
 
 
+
+// router.post('/google', async (req, res) => {
+//   try {
+//     const { token, email, name, profile_image } = req.body;
+    
+//     // Kullanıcıyı veritabanında ara, yoksa oluştur
+//     let user = await User.findOne({ email });
+    
+//     if (!user) {
+//       // Yeni kullanıcı oluştur
+//       user = new User({
+//         email,
+//         username: email.split('@')[0], // Email'den bir kullanıcı adı oluştur
+//         name,
+//         profile_image,
+//         authProvider: 'google',
+//         password: crypto.randomBytes(16).toString('hex') // Rastgele bir şifre oluştur
+//       });
+//       await user.save();
+//     }
+    
+//     // JWT token oluştur
+//     const jwtToken = jwt.sign(
+//       { userId: user._id, email: user.email },
+//       process.env.JWT_SECRET || 'your_jwt_secret',
+//       { expiresIn: '7d' }
+//     );
+    
+//     res.status(200).json({
+//       token: jwtToken,
+//       user: {
+//         id: user._id,
+//         email: user.email,
+//         name: user.name,
+//         username: user.username,
+//         profile_image: user.profile_image
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Google giriş hatası:', error);
+//     res.status(500).json({ message: 'Sunucu hatası' });
+//   }
+// });
+
+
   router.get('/User', async (req, res) => {
     try {
       const users = await User.find();
