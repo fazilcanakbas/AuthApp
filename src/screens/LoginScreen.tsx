@@ -11,24 +11,23 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const { width, height } = Dimensions.get('window');
 
-// Firebase config'in (google-services.json'dan veya Firebase Console'dan aldığın gibi)
 const firebaseConfig = {
-  apiKey: "AIzaSyAFUxF38VpRaNDLRe3j8aDvXDzipIpuCM4",
-  authDomain: "authapp1-20371.firebaseapp.com",
-  projectId: "authapp1-20371",
-  storageBucket: "authapp1-20371.appspot.com",
-  messagingSenderId: "836177744715",
-  appId: "1:836177744715:android:d8ef51ec34fb691e848ece"
+  apiKey: "...",
+  authDomain: "....",
+  projectId: ".....",
+  storageBucket: ".....",
+  messagingSenderId: ".......",
+  appId: "...."
 };
 
-// Firebase'i initialize et (birden fazla kez başlatmaz)
+
 if (getApps().length === 0) {
   initializeApp(firebaseConfig);
 }
 
 const auth = getAuth();
 
-// Web Client ID'ni buraya gir! Google Cloud Console'dan alınıyor.
+
 const WEB_CLIENT_ID = "494991197461-6ur9gbl6k5su0e4prqhbiilu4g8r4tob.apps.googleusercontent.com";
 
 const LoginScreen = ({ navigation }) => {
