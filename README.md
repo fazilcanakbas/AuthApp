@@ -1,50 +1,64 @@
-# Welcome to your Expo app 👋
+# AuthApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobil kullanıcı giriş ve kayıt uygulaması.
 
-## Get started
 
-1. Install dependencies
+## Özellikler
+
+- **Kullanıcı Kaydı (Register)**
+  - Ad, soyad, e-posta, şifre, doğum tarihi ve telefon numarası ile üyelik oluşturma
+  - E-posta benzersizliği ve şifre güvenliği kontrolü
+  - Eksik veya hatalı bilgiler için kullanıcı dostu uyarılar
+  - Doğum tarihi seçim arayüzü ve ülke kodu ile telefon girişi desteği
+
+- **Kullanıcı Girişi (Login)**
+  - E-posta ve şifre ile güvenli giriş
+  - Yanlış şifre veya bulunmayan kullanıcı uyarıları
+  - Hatalı giriş denemelerinde bilgilendirme
+
+- **Google ile Giriş**
+  - Google hesabı ile hızlı ve güvenli kimlik doğrulama
+  - Firebase Authentication ve OAuth desteği
+
+- **JWT Tabanlı Kimlik Doğrulama**
+  - Sunucu tarafında JWT token üretimi ve doğrulaması
+  - Güvenli ve oturum bazlı işlem desteği (token ile korunan uç noktalar)
+
+- **Profil Sayfası**
+  - Kullanıcıya ait profil bilgilerini görüntüleme
+  - Üyelik tarihi, profil resmi, e-posta ve diğer kişisel bilgiler
+  - Profil güncelleme ve şifre değiştirme seçenekleri
+
+- **Şifre Değiştirme**
+  - Mevcut şifre ile doğrulama ve yeni şifre belirleme
+  - Hatalı mevcut şifre kontrolü ve bilgilendirme
+
+- **Bildirim & Ayarlar**
+  - Bildirim ayarlarını değiştirme (geliştirilebilir)
+  - Kullanıcı çıkışı (logout)
+
+- **Modern ve Duyarlı Arayüz**
+  - React Native ve Expo ile tasarlanmış, mobil uyumlu modern tasarım
+  - Şık geçişler, durum göstergeleri ve kullanıcıya rehberlik eden arayüzler
+
+- **Veri Güvenliği**
+  - Şifrelerin güvenli şekilde hashlenmesi (bcrypt ile)
+  - Hassas verilerin korunması ve backend erişimlerinin sınırlandırılması
+ 
+
+## Ekran Görüntüleri
+
+## Kurulum
+
+1. Bağımlılıkları Yükle
 
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Projeyi Başlat
+3. 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
