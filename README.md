@@ -47,6 +47,7 @@ Mobil kullanıcı giriş ve kayıt uygulaması.
  
 
 ## Ekran Görüntüleri
+![Image](https://github.com/user-attachments/assets/95bd2042-5761-4470-ab73-19ab45f4b7d0)
 
 ## Kurulum
 
